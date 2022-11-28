@@ -1,6 +1,7 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
 import { useEffect, useState } from "react";
+import ActionsRow from "../components/table/ActionsRow";
 import CreatedAtRow from "../components/table/CreatedAtRow";
 import StatusRow from "../components/table/StatusRow";
 
@@ -23,9 +24,12 @@ const InvoiceListePage = () => {
         },
         { 
             field: 'amount', headerName: 'Montant', width: 160,
-            valueGetter: (params) => `${params.row.amount} €`,
+            valueGetter: (params) => `${params.value} €`,
          },
-        { field: "id", headerName: 'Actions', width: 130 },
+        { 
+            headerName: 'Actions', width: 300,
+            renderCell: (params) => <ActionsRow params={params} />
+         },
     ]);
 
     useEffect(() => {

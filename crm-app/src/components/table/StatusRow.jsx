@@ -8,8 +8,8 @@ const StatusRow = ({params}) => {
     }
 
     return ( 
-        <Alert severity={severity[params.row.status]} icon={false}>
-            {params.row.status}
+        <Alert severity={severity[params.value]} icon={false}>
+            {params.value}
         </Alert>
      );
 }
