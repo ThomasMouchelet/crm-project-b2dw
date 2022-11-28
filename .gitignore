@@ -1,6 +1,6 @@
 # vulumes mongo docker
 data
-
+.DS_Store 
 # Logs
 logs
 *.log
