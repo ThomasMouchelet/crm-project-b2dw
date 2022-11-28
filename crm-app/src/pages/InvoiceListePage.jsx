@@ -1,11 +1,13 @@
-import { Alert, Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
 import { useEffect, useState } from "react";
+import CreatedAtRow from "../components/table/CreatedAtRow";
 import StatusRow from "../components/table/StatusRow";
 
 const InvoiceListePage = () => {
     const [invoices, setInvoices] = useState([]);
     const [columns, setColumns] = useState([
+        { field: '_id', headerName: 'ID', width: 200 },
         { 
             field: 'customer', headerName: 'Client', width: 130,
             valueGetter: (params) => 
@@ -13,13 +15,17 @@ const InvoiceListePage = () => {
         },
         { 
             field: 'createdAt', headerName: 'Date d\'envoie', width: 130,
-            
+            renderCell: (params) => <CreatedAtRow params={params} />
          },
         { 
             field: 'status', headerName: 'Status', width: 90,
             renderCell: (params) => <StatusRow params={params} />
         },
-        { field: 'amount', headerName: 'Montant', width: 160 },
+        { 
+            field: 'amount', headerName: 'Montant', width: 160,
+            valueGetter: (params) => `${params.row.amount} €`,
+         },
+        { field: "id", headerName: 'Actions', width: 130 },
     ]);
 
     useEffect(() => {
