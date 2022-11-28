@@ -4,21 +4,19 @@ const Customer = require('../models/Customer');
 const InvoiceController = {
     create: async (req, res) => {
         const data = req.body
+        // const customer = await Customer.findById(data.customer)
+        // if(!customer) {
+        //     res.status(404).send('Customer not found')
+        // }
+        // data.customer = customer
         
-        const customer = await Customer.findById(data.customer)
-
-        if(!customer) {
-            res.status(404).send('Customer not found')
-        }
-
-        data.customer = customer
         const invoice = await Invoice.create(data)
         await invoice.save()
         
         res.send(invoice)
 
-        customer.invoices.push(invoice)
-        await customer.save()
+        // customer.invoices.push(invoice)
+        // await customer.save()
     },
     update: async (req, res) => {
         const newInvoice = req.body

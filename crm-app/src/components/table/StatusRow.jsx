@@ -2,8 +2,8 @@ import { Alert } from "@mui/material";
 
 const StatusRow = ({params}) => {
     const severity = {
-        PAID: "success",
-        SENT: "warning"
+        paid: "success",
+        send: "warning"
     }
 
     return ( 

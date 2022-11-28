@@ -1,5 +1,6 @@
 const express = require('express')
 require('dotenv').config()
+const cors = require('cors')
 const app = express()
 const port = process.env.PORT || 8000
 const customerRouter = require('./src/routers/customer.router')
@@ -10,6 +11,7 @@ const connect = require('./config/mongoose.config')
 connect()
 
 app.use(express.json())
+app.use(cors())
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

@@ -1,49 +1,37 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, TextField, Typography } from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
+import { useEffect, useState } from "react";
 import StatusRow from "../components/table/StatusRow";
 
-const invoices = [
-    {
-        id: 1,
-        customer: {
-            firstname: "John",
-            lastname: "Doe",
-        },
-        amount: 500,
-        sentAt: "2021-01-01",
-        status: "SENT",
-    },
-    {
-        id: 2,
-        customer: {
-            firstname: "Jane",
-            lastname: "Doe",
-        },
-        amount: 1000,
-        sentAt: "2021-01-02",
-        status: "PAID",
-    },
-]
-
-const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { 
-        field: 'customer', headerName: 'Client', width: 130,
-        valueGetter: (params) => 
-            `${params.row.customer.firstname} ${params.row.customer.lastname}`,
-    },
-    { 
-        field: 'sentAt', headerName: 'Date d\'envoie', width: 130,
-        
-     },
-    { 
-        field: 'status', headerName: 'Status', width: 90,
-        valueGetter: (params) => <StatusRow params={params} />
-    },
-    { field: 'amount', headerName: 'Montant', width: 160 },
-];
-
 const InvoiceListePage = () => {
+    const [invoices, setInvoices] = useState([]);
+    const [columns, setColumns] = useState([
+        { 
+            field: 'customer', headerName: 'Client', width: 130,
+            valueGetter: (params) => 
+                `${params.row.customer?.firstname} ${params.row.customer?.lastname}`,
+        },
+        { 
+            field: 'createdAt', headerName: 'Date d\'envoie', width: 130,
+            
+         },
+        { 
+            field: 'status', headerName: 'Status', width: 90,
+            renderCell: (params) => <StatusRow params={params} />
+        },
+        { field: 'amount', headerName: 'Montant', width: 160 },
+    ]);
+
+    useEffect(() => {
+        fetchInvoices();
+    }, [])
+
+    const fetchInvoices = async () => {
+        fetch("http://localhost:8000/api/invoices")
+            .then(response => response.json())
+            .then(data => setInvoices(data));
+    }
+
     return ( 
         <Box>
             <Box sx={{
@@ -75,6 +63,7 @@ const InvoiceListePage = () => {
                     pageSize={5}
                     rowsPerPageOptions={[5]}
                     checkboxSelection
+                    getRowId={(row) => row._id}
                 />
             </Box>
         </Box>
