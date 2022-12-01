@@ -5,6 +5,7 @@ import ActionsRow from "../components/table/ActionsRow";
 import CreatedAtRow from "../components/table/CreatedAtRow";
 import StatusRow from "../components/table/StatusRow";
 import {Link} from "react-router-dom";
+import invoiceService from "../../setup/services/invoice.service";
 
 
 const InvoiceListePage = () => {
@@ -40,9 +41,12 @@ const InvoiceListePage = () => {
     }, [])
 
     const fetchInvoices = async () => {
-        fetch("http://localhost:8000/api/invoices")
-            .then(response => response.json())
-            .then(data => setInvoices(data));
+        try {
+            const invoices = await invoiceService.findAll()
+            setInvoices(invoices);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return ( 

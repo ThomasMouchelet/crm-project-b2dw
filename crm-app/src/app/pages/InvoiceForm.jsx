@@ -2,6 +2,7 @@ import { Button, FormControl, MenuItem, Select, TextField } from "@mui/material"
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import invoiceService from "../../setup/services/invoice.service";
 
 const InvoiceForm = () => {
     const { id } = useParams();
@@ -13,26 +14,24 @@ const InvoiceForm = () => {
         if(editMode) fetInvoice()
     }, [id])
 
-    const fetInvoice = (e) => {
-        fetch(`http://localhost:8000/api/invoices/${id}`)
-            .then(response => response.json())
-            .then(data => setCredantials(data))
+    const fetInvoice = async (e) => {
+        try {
+            const invoice = await invoiceService.findOneById(id)
+            setCredantials(invoice)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
-    const handleSubmit = (e) => {
-        const method = editMode ? "PUT" : "POST";
-
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(credantials);
-        fetch(`http://localhost:8000/api/invoices/${editMode && id}`, {
-            method,
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(credantials)
-        })
-        .then(response => response.json())
-        .then(data => console.log(data))
+        const method = editMode ? "update" : "create";
+
+        try {
+            await invoiceService[method](credantials)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const handleChange = (e) => {

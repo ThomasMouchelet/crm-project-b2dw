@@ -1,14 +1,17 @@
 import { Box, Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import invoiceService from "../../../setup/services/invoice.service";
 
 const ActionsRow = ({params, fetchInvoices}) => {
-    const handleDelete = (e) => {
+
+    const handleDelete = async (e) => {
         e.stopPropagation()
-        console.log("Delete", params.row._id);
-        fetch(`http://localhost:8000/api/invoices/${params.row._id}`, {
-            method: "DELETE",
-        })
-        .then(res => fetchInvoices())
+        try {
+            await invoiceService.remove(params.id)
+            fetchInvoices()
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return ( 
