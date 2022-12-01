@@ -1,23 +1,24 @@
 import { Box, Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
-const ActionsRow = ({params}) => {
-
-    const handleEdit = (e) => {
+const ActionsRow = ({params, fetchInvoices}) => {
+    const handleDelete = (e) => {
         e.stopPropagation()
-        console.log("Edit", params.row._id);
-        // TODO: Redirect to edit page
+        console.log("Delete", params.row._id);
+        fetch(`http://localhost:8000/api/invoices/${params.row._id}`, {
+            method: "DELETE",
+        })
+        .then(res => fetchInvoices())
     }
-
-    // Delete
-    // fetch delete request
-    // refresh data
 
     return ( 
         <Box display="flex" justifyContent="space-around">
-            <Button variant="contained" color="primary" size="small" onClick={handleEdit}>
-                Editer
-            </Button>
-            <Button variant="contained" color="secondary" size="small" sx={{ml: 2}}>
+            <Link to={`/invoices/${params.row._id}`} style={{textDecoration: "none"}}>
+                <Button variant="contained" color="primary" size="small">
+                    Editer
+                </Button>
+            </Link>
+            <Button variant="contained" color="secondary" size="small" sx={{ml: 2}} onClick={handleDelete}>
                 Supprimer
             </Button>
         </Box>

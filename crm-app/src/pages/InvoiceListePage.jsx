@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import ActionsRow from "../components/table/ActionsRow";
 import CreatedAtRow from "../components/table/CreatedAtRow";
 import StatusRow from "../components/table/StatusRow";
+import {Link} from "react-router-dom";
+
 
 const InvoiceListePage = () => {
     const [invoices, setInvoices] = useState([]);
+
     const [columns, setColumns] = useState([
         { field: '_id', headerName: 'ID', width: 200 },
         { 
@@ -28,7 +31,7 @@ const InvoiceListePage = () => {
          },
         { 
             headerName: 'Actions', width: 300,
-            renderCell: (params) => <ActionsRow params={params} />
+            renderCell: (params) => <ActionsRow params={params} fetchInvoices={fetchInvoices} />
          },
     ]);
 
@@ -51,7 +54,9 @@ const InvoiceListePage = () => {
                 alignItems: "center",
             }}>
                 <Typography variant="h2">Liste des factures</Typography>
-                <Button variant="contained">Nouvelle facture</Button>
+                <Link to="/invoices/create" style={{textDecoration: "none"}}>
+                    <Button variant="contained">Nouvelle facture</Button>
+                </Link>
             </Box>
             <Box component="form">
                 <TextField 

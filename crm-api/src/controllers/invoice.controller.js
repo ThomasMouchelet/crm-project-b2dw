@@ -28,7 +28,7 @@ const InvoiceController = {
         res.send(deleteInvoice)
     },
     getAll: async (req, res) => {
-        const invoiceList = await Invoice.find()
+        const invoiceList = await Invoice.find().populate('customer')
         res.send(invoiceList)
     },
     getOne: async (req, res) => {
